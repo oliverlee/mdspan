@@ -60,8 +60,8 @@ template<class IndexType, class ... Arguments>
 MDSPAN_INLINE_FUNCTION
 static constexpr bool are_valid_indices() {
     return
-      (std::is_convertible<Arguments, IndexType>::value && ... && true) &&
-      (std::is_nothrow_constructible<IndexType, Arguments>::value && ... && true);
+      _MDSPAN_FOLD_AND(std::is_convertible<Arguments, IndexType>::value) &&
+      _MDSPAN_FOLD_AND(std::is_nothrow_constructible<IndexType, Arguments>::value);
 }
 
 // ------------------------------------------------------------------
