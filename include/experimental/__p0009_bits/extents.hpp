@@ -542,7 +542,7 @@ public:
   operator==(const extents &lhs,
              const extents<OtherIndexType, OtherExtents...> &rhs) noexcept {
     return
-      rank() == extents<OtherIndexType, OtherExtents...>::rank() and
+      rank() == extents<OtherIndexType, OtherExtents...>::rank() &&
       detail::rankwise_equal(detail::with_rank<rank()>{}, rhs, lhs, detail::extent);
   }
 

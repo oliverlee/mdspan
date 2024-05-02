@@ -5,7 +5,7 @@ TEST(mdspan_macros, precondition_violation)
 {
   constexpr auto msg = "hello, world!";
 
-  ASSERT_DEATH(MDSPAN_PRECONDITION(false and "hello, world!"), msg);
+  ASSERT_DEATH(MDSPAN_IMPL_PRECONDITION(false and "hello, world!"), msg);
 }
 
 TEST(mdspan_macros, precondition_check_constexpr_invocable)
@@ -14,7 +14,7 @@ TEST(mdspan_macros, precondition_check_constexpr_invocable)
   {
     constexpr auto operator()() const
     {
-      MDSPAN_PRECONDITION(1 + 1 == 2);
+      MDSPAN_IMPL_PRECONDITION(1 + 1 == 2);
       return 42;
     }
   };

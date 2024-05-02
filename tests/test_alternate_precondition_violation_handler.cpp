@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#define MDSPAN_PRECONDITION_VIOLATION_HANDLER(cond, file, line) \
+#define MDSPAN_IMPL_PRECONDITION_VIOLATION_HANDLER(cond, file, line) \
   do { \
     throw std::logic_error{"precondition failure"}; \
   } while (0);
@@ -10,7 +10,7 @@
 
 TEST(mdspan_macros, alternate_precondition_violation_handler)
 {
-  ASSERT_THROW(MDSPAN_PRECONDITION(false), std::logic_error);
+  ASSERT_THROW(MDSPAN_IMPL_PRECONDITION(false), std::logic_error);
 }
 
 TEST(mdspan_macros, alternate_precondition_check_constexpr_invocable)
@@ -19,7 +19,7 @@ TEST(mdspan_macros, alternate_precondition_check_constexpr_invocable)
   {
     constexpr auto operator()() const
     {
-      MDSPAN_PRECONDITION(1 + 1 == 2);
+      MDSPAN_IMPL_PRECONDITION(1 + 1 == 2);
       return 42;
     }
   };

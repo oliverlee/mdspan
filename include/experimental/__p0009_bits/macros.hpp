@@ -115,34 +115,34 @@ inline void default_precondition_violation_handler(const char* cond, const char*
 } // namespace detail
 } // namespace MDSPAN_IMPL_STANDARD_NAMESPACE
 
-#ifndef MDSPAN_PRECONDITION_VIOLATION_HANDLER
-#define MDSPAN_PRECONDITION_VIOLATION_HANDLER(cond, file, line) \
+#ifndef MDSPAN_IMPL_PRECONDITION_VIOLATION_HANDLER
+#define MDSPAN_IMPL_PRECONDITION_VIOLATION_HANDLER(cond, file, line) \
   MDSPAN_IMPL_STANDARD_NAMESPACE::detail::default_precondition_violation_handler(cond, file, line)
 #endif
 
-#ifndef MDSPAN_SKIP_PRECONDITION_VIOLATION_HANDLER
+#ifndef MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER
   #ifndef NDEBUG
-    #define MDSPAN_SKIP_PRECONDITION_VIOLATION_HANDLER 0
+    #define MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER 0
   #else
-    #define MDSPAN_SKIP_PRECONDITION_VIOLATION_HANDLER 1
+    #define MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER 1
   #endif
 #endif
 
 namespace MDSPAN_IMPL_STANDARD_NAMESPACE {
 namespace detail {
 
-template <bool skip = MDSPAN_SKIP_PRECONDITION_VIOLATION_HANDLER>
+template <bool skip = MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER>
 constexpr void precondition(const char* cond, const char* file, unsigned line)
 {
   if (skip) { return; }
 
-  MDSPAN_PRECONDITION_VIOLATION_HANDLER(cond, file, line);
+  MDSPAN_IMPL_PRECONDITION_VIOLATION_HANDLER(cond, file, line);
 }
 
 } // namespace detail
 } // namespace MDSPAN_IMPL_STANDARD_NAMESPACE
 
-#define MDSPAN_PRECONDITION(...) \
+#define MDSPAN_IMPL_PRECONDITION(...) \
   do { \
     if (not (__VA_ARGS__)) { \
       MDSPAN_IMPL_STANDARD_NAMESPACE::detail::precondition(#__VA_ARGS__, __FILE__, __LINE__); \

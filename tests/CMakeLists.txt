@@ -14,7 +14,7 @@ macro(mdspan_add_test name)
   target_link_libraries(${name} mdspan gtest_main)
   add_test(${name} ${name})
   set_property(TARGET ${name} PROPERTY COMPILE_WARNING_AS_ERROR ON)
-  target_compile_definitions(${name} PUBLIC MDSPAN_SKIP_PRECONDITION_VIOLATION_HANDLER=0)
+  target_compile_definitions(${name} PUBLIC MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER=0)
 endmacro()
 
 if(MDSPAN_USE_SYSTEM_GTEST)
