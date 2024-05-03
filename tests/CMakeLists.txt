@@ -6,7 +6,12 @@ if(MDSPAN_ENABLE_CUDA)
   endif()
 endif()
 
-macro(mdspan_add_test name)
+function(mdspan_add_test name)
+  set(options ENABLE_PRECONDITIONS)
+  set(one_value)
+  set(multi_value)
+  cmake_parse_arguments(ARGUMENT "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
   if(MDSPAN_TEST_LANGUAGE)
     set_source_files_properties(${name} PROPERTIES LANGUAGE ${MDSPAN_TEST_LANGUAGE})
   endif()
@@ -14,8 +19,11 @@ macro(mdspan_add_test name)
   target_link_libraries(${name} mdspan gtest_main)
   add_test(${name} ${name})
   set_property(TARGET ${name} PROPERTY COMPILE_WARNING_AS_ERROR ON)
-  target_compile_definitions(${name} PUBLIC MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER=0)
-endmacro()
+  target_compile_definitions(${name}
+    PUBLIC
+    MDSPAN_IMPL_CHECK_PRECONDITION=$<BOOL:${ARGUMENT_ENABLE_PRECONDITIONS}>
+  )
+endfunction()
 
 if(MDSPAN_USE_SYSTEM_GTEST)
   find_package(GTest CONFIG REQUIRED)
@@ -50,9 +58,11 @@ else()
   )
 endif()
 
+mdspan_add_test(test_alternate_precondition_violation_handler ENABLE_PRECONDITIONS)
+mdspan_add_test(test_macros ENABLE_PRECONDITIONS)
+mdspan_add_test(test_layout_preconditions ENABLE_PRECONDITIONS)
+
 mdspan_add_test(test_dims)
-mdspan_add_test(test_alternate_precondition_violation_handler)
-mdspan_add_test(test_macros)
 mdspan_add_test(test_extents)
 mdspan_add_test(test_mdspan_ctors)
 mdspan_add_test(test_mdspan_swap)

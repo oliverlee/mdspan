@@ -120,21 +120,21 @@ inline void default_precondition_violation_handler(const char* cond, const char*
   MDSPAN_IMPL_STANDARD_NAMESPACE::detail::default_precondition_violation_handler(cond, file, line)
 #endif
 
-#ifndef MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER
+#ifndef MDSPAN_IMPL_CHECK_PRECONDITION
   #ifndef NDEBUG
-    #define MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER 0
+    #define MDSPAN_IMPL_CHECK_PRECONDITION 0
   #else
-    #define MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER 1
+    #define MDSPAN_IMPL_CHECK_PRECONDITION 1
   #endif
 #endif
 
 namespace MDSPAN_IMPL_STANDARD_NAMESPACE {
 namespace detail {
 
-template <bool skip = MDSPAN_IMPL_SKIP_PRECONDITION_VIOLATION_HANDLER>
+template <bool check = MDSPAN_IMPL_CHECK_PRECONDITION>
 constexpr void precondition(const char* cond, const char* file, unsigned line)
 {
-  if (skip) { return; }
+  if (not check) { return; }
 
   MDSPAN_IMPL_PRECONDITION_VIOLATION_HANDLER(cond, file, line);
 }
