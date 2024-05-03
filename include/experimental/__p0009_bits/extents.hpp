@@ -653,7 +653,7 @@ check_one_index(InputIndex user_index,
                 ExtentsIndexType current_extent)
 {
   check_lower_bound(user_index, current_extent,
-    std::integral_constant<bool, std::is_signed_v<ExtentsIndexType>>{});
+    std::integral_constant<bool, std::is_signed<ExtentsIndexType>::value>{});
   check_upper_bound(user_index, current_extent);
 }
  
