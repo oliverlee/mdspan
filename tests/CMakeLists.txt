@@ -8,14 +8,18 @@ endif()
 
 function(mdspan_add_test name)
   set(options ENABLE_PRECONDITIONS)
-  set(one_value)
+  set(one_value SOURCE)
   set(multi_value)
   cmake_parse_arguments(ARGUMENT "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  if(NOT DEFINED ARGUMENT_SOURCE)
+    set(ARGUMENT_SOURCE ${name}.cpp)
+  endif()
 
   if(MDSPAN_TEST_LANGUAGE)
     set_source_files_properties(${name} PROPERTIES LANGUAGE ${MDSPAN_TEST_LANGUAGE})
   endif()
-  add_executable(${name} ${name}.cpp)
+  add_executable(${name} ${ARGUMENT_SOURCE})
   target_link_libraries(${name} mdspan gtest_main)
   add_test(${name} ${name})
   set_property(TARGET ${name} PROPERTY COMPILE_WARNING_AS_ERROR ON)
@@ -57,6 +61,21 @@ else()
     EXCLUDE_FROM_ALL
   )
 endif()
+
+mdspan_add_test(
+  test_precondition_checks_can_be_disabled
+  SOURCE test_alternate_precondition_violation_handler.cpp
+)
+target_compile_definitions(
+  test_precondition_checks_can_be_disabled
+PUBLIC
+  MDSPAN_IMPL_CHECK_PRECONDITION=0
+)
+set_tests_properties(
+  test_precondition_checks_can_be_disabled
+PROPERTIES
+  PASS_REGULAR_EXPRESSION "Failure.*Expected.*throws an exception of type std::logic_error.*Actual.*it throws nothing"
+)
 
 mdspan_add_test(test_alternate_precondition_violation_handler ENABLE_PRECONDITIONS)
 mdspan_add_test(test_macros ENABLE_PRECONDITIONS)
