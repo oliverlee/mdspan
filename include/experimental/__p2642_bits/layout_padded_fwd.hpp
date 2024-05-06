@@ -122,7 +122,7 @@ constexpr void check_padded_layout_converting_constructor_preconditions(MDSPAN_I
     layout_padded_constants<typename _OtherMapping::layout_type,
                             _ExtentsType>::padded_stride_idx;
   constexpr auto extent_to_pad_idx = layout_padded_constants<typename _OtherMapping::layout_type, _ExtentsType>::extent_to_pad_idx;
-  assert(other_mapping.stride(padded_stride_idx) == other_mapping.extents().extent(extent_to_pad_idx));
+  MDSPAN_IMPL_PRECONDITION(other_mapping.stride(padded_stride_idx) == other_mapping.extents().extent(extent_to_pad_idx));
 }
 
 
