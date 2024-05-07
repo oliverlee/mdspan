@@ -106,9 +106,17 @@
 namespace MDSPAN_IMPL_STANDARD_NAMESPACE {
 namespace detail {
 
+#ifdef __CUDA_ARCH__
+  #define eprintf printf
+#elif __SYCL_ARCH__
+  #define eprintf sycl::ext::oneapi::experimental::printf
+#else
+  const auto eprintf = [](auto... args) { (void)std::fprintf(::stderr, args...); };
+#endif
+
 inline void default_precondition_violation_handler(const char* cond, const char* file, unsigned line)
 {
-  (void)std::fprintf(::stderr, "%s:%u: precondition failure: `%s`\n", file, line, cond);
+  eprintf("%s:%u: precondition failure: `%s`\n", file, line, cond);
   std::abort();
 }
 
@@ -132,7 +140,7 @@ namespace MDSPAN_IMPL_STANDARD_NAMESPACE {
 namespace detail {
 
 template <bool check = MDSPAN_IMPL_CHECK_PRECONDITION>
-constexpr void precondition(const char* cond, const char* file, unsigned line)
+MDSPAN_FUNCTION constexpr void precondition(const char* cond, const char* file, unsigned line)
 {
   if (not check) { return; }
 
