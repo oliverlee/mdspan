@@ -77,7 +77,9 @@ PROPERTIES
   PASS_REGULAR_EXPRESSION "Failure.*Expected.*throws an exception of type std::logic_error.*Actual.*it throws nothing"
 )
 
+if(NOT MDSPAN_ENABLE_CUDA AND NOT MDSPAN_ENABLE_HIP AND NOT MDSPAN_ENABLE_SYCL)
 mdspan_add_test(test_alternate_precondition_violation_handler ENABLE_PRECONDITIONS)
+endif()
 mdspan_add_test(test_macros ENABLE_PRECONDITIONS)
 mdspan_add_test(test_layout_preconditions ENABLE_PRECONDITIONS)
 

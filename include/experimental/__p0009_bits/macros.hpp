@@ -21,6 +21,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <type_traits> // std::is_void
+#if defined(_MDSPAN_HAS_CUDA) || defined(_MDSPAN_HAS_HIP) || defined(_MDSPAN_HAS_SYCL)
+#include "assert.h"
+#endif
 
 #ifndef _MDSPAN_HOST_DEVICE
 #  if defined(_MDSPAN_HAS_CUDA) || defined(_MDSPAN_HAS_HIP)
@@ -106,19 +109,25 @@
 namespace MDSPAN_IMPL_STANDARD_NAMESPACE {
 namespace detail {
 
-#ifdef __CUDA_ARCH__
-  #define eprintf printf
-#elif __SYCL_ARCH__
-  #define eprintf sycl::ext::oneapi::experimental::printf
-#else
-  const auto eprintf = [](auto... args) { (void)std::fprintf(::stderr, args...); };
-#endif
-
-inline void default_precondition_violation_handler(const char* cond, const char* file, unsigned line)
+#if defined(_MDSPAN_HAS_CUDA) || defined(_MDSPAN_HAS_HIP)
+MDSPAN_FUNCTION inline void default_precondition_violation_handler(const char* cond, const char* file, unsigned line)
 {
-  eprintf("%s:%u: precondition failure: `%s`\n", file, line, cond);
+  printf("%s:%u: precondition failure: `%s`\n", file, line, cond);
+  assert(0);
+}
+#elif defined(_MDSPAN_HAS_SYCL)
+MDSPAN_FUNCTION inline void default_precondition_violation_handler(const char* cond, const char* file, unsigned line)
+{
+  sycl::ext::oneapi::experimental::printf("%s:%u: precondition failure: `%s`\n", file, line, cond);
+  assert(0);
+}
+#else
+MDSPAN_FUNCTION inline void default_precondition_violation_handler(const char* cond, const char* file, unsigned line)
+{
+  std::fprintf(::stderr, "%s:%u: precondition failure: `%s`\n", file, line, cond);
   std::abort();
 }
+#endif
 
 } // namespace detail
 } // namespace MDSPAN_IMPL_STANDARD_NAMESPACE
