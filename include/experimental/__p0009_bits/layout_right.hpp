@@ -157,9 +157,7 @@ class layout_right::mapping {
         * TODO: check precondition
         * other.required_span_size() is a representable value of type index_type
         */
-       #if !defined(_MDSPAN_HAS_CUDA) && !defined(_MDSPAN_HAS_HIP)
        detail::validate_strides(detail::with_rank<extents_type::rank()>{}, layout_right{}, __extents, other);
-       #endif
     }
 
     MDSPAN_INLINE_FUNCTION_DEFAULTED _MDSPAN_CONSTEXPR_14_DEFAULTED mapping& operator=(mapping const&) noexcept = default;
