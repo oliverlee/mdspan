@@ -152,7 +152,10 @@ template <bool check = MDSPAN_IMPL_CHECK_PRECONDITION>
 MDSPAN_FUNCTION constexpr void precondition(const char* cond, const char* file, unsigned line)
 {
   if (not check) { return; }
-
+  // in case the macro doesn't use the arguments for custom macros
+  (void) cond;
+  (void) file;
+  (void) line;
   MDSPAN_IMPL_PRECONDITION_VIOLATION_HANDLER(cond, file, line);
 }
 

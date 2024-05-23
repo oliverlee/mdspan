@@ -28,7 +28,7 @@ using IC = std::integral_constant<Integral, Value>;
 template<class ExpectedOutputMdspan, class InputMdspan, class ... Slices>
 void test_submdspan_static_slice(
   typename InputMdspan::mapping_type input_mapping,
-  Slices&&... slices)
+  [[maybe_unused]] Slices&&... slices)
 {
   using input_type = InputMdspan;
   std::vector<typename InputMdspan::value_type> storage(input_mapping.required_span_size());
@@ -44,7 +44,7 @@ void test_submdspan_static_slice(
 template<class ExpectedOutputMdspan, class InputMdspan, class ... Slices>
 void test_submdspan_static_slice(
   typename InputMdspan::extents_type input_extents,
-  Slices&&... slices)
+  [[maybe_unused]] Slices&&... slices)
 {
   using input_mapping_type = typename InputMdspan::mapping_type;
   input_mapping_type input_mapping(input_extents);
@@ -52,12 +52,14 @@ void test_submdspan_static_slice(
 }
 
 TEST(TestMdspan, StaticAsserts) {
+  (void) test_info_;
   static_assert(std::is_convertible<IC<std::size_t, 1>, std::size_t>::value, "Just a check.");
   static_assert(std::is_convertible<IC<int32_t, 1>, std::size_t>::value, "Just a check.");
   static_assert(std::is_convertible<IC<uint32_t, 1>, std::size_t>::value, "Just a check.");
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_FullFullIndex) {
+  (void) test_info_;
   using input_extents_type = Kokkos::dextents<int, 3>;
   using input_layout_type = Kokkos::layout_left;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -84,6 +86,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_FullFullIndex) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_FullFullIndex) {
+  (void) test_info_;
   using input_extents_type = Kokkos::extents<int, 3, 4, 5>;
   using input_layout_type = Kokkos::layout_left;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -110,6 +113,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_FullFullIndex) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_iddd_FullFullIndex) {
+  (void) test_info_;
   using input_extents_type = Kokkos::dextents<int, 3>;
   using input_layout_type = Kokkos::layout_right;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -136,6 +140,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_iddd_FullFullIndex) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_i345_FullFullIndex) {
+  (void) test_info_;
   using input_extents_type = Kokkos::extents<int, 3, 4, 5>;
   using input_layout_type = Kokkos::layout_right;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -162,6 +167,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_i345_FullFullIndex) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_FullIndexFull) {
+  (void) test_info_;
   using input_extents_type = Kokkos::dextents<int, 3>;
   using input_layout_type = Kokkos::layout_left;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -188,6 +194,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_FullIndexFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_FullIndexFull) {
+  (void) test_info_;
   using input_extents_type = Kokkos::extents<int, 3, 4, 5>;
   using input_layout_type = Kokkos::layout_left;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -214,6 +221,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_FullIndexFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_FullTupleFull) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::dextents<int, 3>;
   using input_layout_type = Kokkos::layout_left;
@@ -251,6 +259,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_FullTupleFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_FullTupleFull) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::extents<int, 3, 4, 5>;
   using input_layout_type = Kokkos::layout_left;
@@ -288,6 +297,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_FullTupleFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_iddd_FullTupleFull) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::dextents<int, 3>;
   using input_layout_type = Kokkos::layout_right;
@@ -325,6 +335,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_iddd_FullTupleFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_i345_FullTupleFull) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::extents<int, 3, 4, 5>;
   using input_layout_type = Kokkos::layout_right;
@@ -362,6 +373,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_i345_FullTupleFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_TupleFullTuple) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::dextents<int, 3>;
   using input_layout_type = Kokkos::layout_left;
@@ -403,6 +415,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_iddd_TupleFullTuple) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_TupleFullTuple) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::extents<int, 3, 4, 5>;
   using input_layout_type = Kokkos::layout_left;
@@ -444,6 +457,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_i345_TupleFullTuple) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_iddd_TupleFullTuple) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::dextents<int, 3>;
   using input_layout_type = Kokkos::layout_right;
@@ -485,6 +499,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_iddd_TupleFullTuple) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_i345_TupleFullTuple) {
+  (void) test_info_;
   using std::tuple;
   using input_extents_type = Kokkos::extents<int, 3, 4, 5>;
   using input_layout_type = Kokkos::layout_right;
@@ -529,6 +544,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_i345_TupleFullTuple) {
 // it may help to comment out all the tests but the ones below.
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_idd_FullTuple) {
+  (void) test_info_;
   // tuple of two integral_constant is convertible to tuple of two size_t.
   // Nevertheless, submdspan needs special handling to be able to compile
   // with a tuple of two integral_constant as a slice specifier.
@@ -574,6 +590,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_idd_FullTuple) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_idd_FullTuple) {
+  (void) test_info_;
   using input_extents_type = Kokkos::dextents<int, 2>;
   using input_layout_type = Kokkos::layout_right;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -608,6 +625,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_idd_FullTuple) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_idd_TupleFull) {
+  (void) test_info_;
   using input_extents_type = Kokkos::dextents<int, 2>;
   using input_layout_type = Kokkos::layout_left;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -642,6 +660,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_idd_TupleFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_idd_TupleFull) {
+  (void) test_info_;
   using input_extents_type = Kokkos::dextents<int, 2>;
   using input_layout_type = Kokkos::layout_right;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -676,6 +695,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Right_idd_TupleFull) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Stride_idd_TupleFull) {
+  (void) test_info_;
   using input_extents_type = Kokkos::dextents<int, 2>;
   using input_layout_type = Kokkos::layout_stride;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -715,6 +735,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Stride_idd_TupleFull) {
 // Rank 1 tests
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_id_Tuple) {
+  (void) test_info_;
   using input_extents_type = Kokkos::extents<int, Kokkos::dynamic_extent>;
   using input_layout_type = Kokkos::layout_left;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -749,6 +770,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_id_Tuple) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Left_i5_Tuple) {
+  (void) test_info_;
   using input_extents_type = Kokkos::extents<int, 5>;
   using input_layout_type = Kokkos::layout_left;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;
@@ -783,6 +805,7 @@ TEST(TestMdspan, SubmdspanStaticSlice_Left_i5_Tuple) {
 }
 
 TEST(TestMdspan, SubmdspanStaticSlice_Right_id_Tuple) {
+  (void) test_info_;
   using input_extents_type = Kokkos::extents<int, Kokkos::dynamic_extent>;
   using input_layout_type = Kokkos::layout_right;
   using input_mdspan_type = Kokkos::mdspan<float, input_extents_type, input_layout_type>;

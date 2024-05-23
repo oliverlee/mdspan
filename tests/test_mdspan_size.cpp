@@ -55,6 +55,7 @@ void test_mdspan_size(std::vector<char>& storage, Extents&& e)
 
 TEST(TestMdspan, MdspanSizeReturnTypeAndPrecondition)
 {
+  (void) test_info_;
   std::vector<char> storage;
 
   static_assert(std::numeric_limits<std::int8_t>::max() == 127, "max int8_t != 127");
