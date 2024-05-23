@@ -20,7 +20,9 @@
 #include "extents.hpp"
 #include "layout_stride.hpp"
 #include "utility.hpp"
+#if MDSPAN_HAS_CXX_17
 #include "../__p2642_bits/layout_padded_fwd.hpp"
+#endif
 
 namespace MDSPAN_IMPL_STANDARD_NAMESPACE {
 
